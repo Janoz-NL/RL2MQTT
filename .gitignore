@@ -1,0 +1,5 @@
+source/build
+source/plugins
+source/vcpkg_installed
+plugins/RL2MQTT.dll
+**/.vs

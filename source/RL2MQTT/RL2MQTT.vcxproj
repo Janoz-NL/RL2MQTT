@@ -93,7 +93,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File update_version.ps1 "./version.h"</Command>
+      <Command>powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File update_version.ps1 "./version.h" &amp;&amp; xcopy /Y /I $(SolutionDir)..\plugins\settings $(SolutionDir)plugins\settings\ </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
