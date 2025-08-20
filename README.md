@@ -12,7 +12,7 @@ When you open the Bakkesmod screen (F2), there is a settings page in the plugin 
 ### Console
 
 Configuration can also be done in the console (F6). Change server settings using
-`rl2mqtt_server "mqtt://localhost:1883"`. When you use a standard port without SSL only an IP address is 
+`rl2mqtt_server "mqtt://localhost:1883"`. When you use a standard port without SSL, only an IP address is 
 enough. Optionaly you can also configure a username and password with `rl2mqtt_username "user"` and
 `rl2mqtt_password "password"` when nescesary.
 
