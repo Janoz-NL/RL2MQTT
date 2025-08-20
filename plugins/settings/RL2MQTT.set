@@ -1,0 +1,19 @@
+RL2MQTT
+9|RL2MQTT is a plugin that publishes game events to MQTT topics. Main game events will 
+9|be published on "rl2mqtt/gameevent" while ticker events will be published 
+9|on "rl2mqtt/ticker".
+9|
+8|
+9|MQTT Server settings
+12|Server|rl2mqtt_server
+12|Username|rl2mqtt_password
+12|password|rl2mqtt_password
+8|
+0|Connect|rl2mqtt_connect_async
+7|
+0|Disconnect|rl2mqtt_disconnect_async
+7|
+9|Current state is $rl2mqtt_status$
+8|
+9|Version $rl2mqtt_version$
+9|This plugin was made by Janoz

@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="PCH">
+      <UniqueIdentifier>{65407bae-1075-4bdd-9dfd-acc5a636ec02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugin">
+      <UniqueIdentifier>{a1b543a5-c4b7-4cf1-8adf-c2f26cf59952}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugin\header">
+      <UniqueIdentifier>{46d01869-81e6-496b-b2c1-aeeb13d6b983}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugin\src">
+      <UniqueIdentifier>{33ae5c6a-718c-410e-bdb8-9c032f65c710}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp">
+      <Filter>PCH</Filter>
+    </ClCompile>
+    <ClCompile Include="Rl2Mqtt.cpp">
+      <Filter>Plugin\src</Filter>
+    </ClCompile>
+    <ClCompile Include="JsonSerialiser.cpp">
+      <Filter>Plugin\src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="version.h">
+      <Filter>Plugin\header</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>PCH</Filter>
+    </ClInclude>
+    <ClInclude Include="Rl2Mqtt.h">
+      <Filter>Plugin\header</Filter>
+    </ClInclude>
+    <ClInclude Include="JsonSerializer.h">
+      <Filter>Plugin\header</Filter>
+    </ClInclude>
+    <ClInclude Include="datatypes.h">
+      <Filter>Plugin\header</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\plugins\settings\RL2MQTT.set" />
+    <None Include="..\vcpkg.json" />
+  </ItemGroup>
+</Project>
