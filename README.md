@@ -28,6 +28,8 @@ an IP address is enough. Optionaly you can also configure a username and passwor
 
 To connect use `rl2mqtt_connect` and to disconnect `rl2mqtt_disconnect`.
 
+You can automatically connect on startup by setting `rl2mqtt_connect-on-startup 1`.
+
 ## Game event messages
 
 Game events are hooks in the game which trigger a message on certain events. THe message 

@@ -49,6 +49,16 @@ void Rl2Mqtt::onLoad()
 	cvarManager->registerCvar(CVAR_MQTT_SERVER, "mqtt://localhost:1883", "MQTT server");
 	cvarManager->registerCvar(CVAR_MQTT_USERNAME, "", "MQTT Username");
 	cvarManager->registerCvar(CVAR_MQTT_PASSWORD, "", "MQTT Password");
+	cvarManager->registerCvar(CVAR_MQTT_CONNECT_ON_STARTUP, "0", "Connect on startup", true, true, 0, true, 1).addOnValueChanged([this](std::string oldValue, CVarWrapper cvar)
+		{
+			if (cvar.getBoolValue())
+			{
+				gameWrapper->Execute([this](GameWrapper* gw) {
+					cvarManager->executeCommand("sleep 2000; " COMMAND_MQTT_CONNECT);
+				});
+			}
+		}
+	);
 
 	// Status container
 	cvarManager->registerCvar(CVAR_MQTT_VERSION, plugin_version, "Plugin version", false, false, 0, false, 0, false);
