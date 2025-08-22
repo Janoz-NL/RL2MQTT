@@ -17,6 +17,8 @@ There are two ways to configure this plugin. Using the plugin GUI and using the 
 
 When you open the Bakkesmod screen (F2), there is a settings page in the plugin manager.
 
+<img alt="Settings tab screenshot" src="assets/RL2MQTT_settings.png">
+
 ### Console
 
 Configuration can also be done in the console (F6). Change server settings using
