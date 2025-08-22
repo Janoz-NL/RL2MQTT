@@ -4,7 +4,10 @@
   <img alt="RL2MQTT Banner" src="assets/rl2mqtt.png">
 </picture>
 
-Connect your Rocket League to an MQTT broker. Game events and ticker messages wil be published as json messages. Use these messages in whatever tool you like to do whatever you want. Change lights using node-red and/or home-assistant. Trigger actions in OBS-Studio or activate a soundboard on your discord server.
+Connect your Rocket League to an MQTT broker. Game events and ticker messages wil be 
+published as json messages. Use these messages in whatever tool you like to do whatever 
+you want. Change lights using node-red and/or home-assistant. Trigger actions in OBS-Studio 
+or activate a soundboard on your discord server.
 
 ## Configuration
 
@@ -17,15 +20,17 @@ When you open the Bakkesmod screen (F2), there is a settings page in the plugin 
 ### Console
 
 Configuration can also be done in the console (F6). Change server settings using
-`rl2mqtt_server "mqtt://localhost:1883"`. When you use a standard port without SSL, only an IP address is 
-enough. Optionaly you can also configure a username and password with `rl2mqtt_username "user"` and
-`rl2mqtt_password "password"` when nescesary.
+`rl2mqtt_server "mqtt://localhost:1883"`. When you use a standard port without SSL, only 
+an IP address is enough. Optionaly you can also configure a username and password with 
+`rl2mqtt_username "user"` and `rl2mqtt_password "password"` when nescesary.
 
 To connect use `rl2mqtt_connect` and to disconnect `rl2mqtt_disconnect`.
 
 ## Game event messages
 
-Game events are hooks in the game which trigger a message on certain events. THe message will contain all the teams and players in the current match. Gamne event messages are published in `"rl2mqtt/gameevent"`.
+Game events are hooks in the game which trigger a message on certain events. THe message 
+will contain all the teams and players in the current match. Gamne event messages are 
+published in `"rl2mqtt/gameevent"`.
 
 ### Example of game event message
 ```json
@@ -92,7 +97,19 @@ Curently the following hooks are supported:
 
 ## Ticker messages
 
-Ticker messages are messages which would normaly be displayed in the upper right corner. The JSON message consists of the player and the tickerEvent. In case of a "Demolish" it will also contain the victim. These messages are published in `rl2mqtt/ticker`.
+Rocket League also publishes stat events. Those events are divided into two categories:
+
+#### StatEvent
+ 
+Stat events are messages which normaly popup fullscreen for the current player. These 
+are things like "Clear Ball" or "First Touch". Currently these messages are _not implemented_
+by RL2MQTT.
+
+#### StatTickerMessages
+
+Ticker messages are messages which would normally be displayed in the upper right 
+corner. The JSON message consists of the player and the tickerEvent. In case of a 
+"Demolish" it will also contain the victim. These messages are published in `rl2mqtt/ticker`.
 
 ### Example of a ticker json message:
 
@@ -138,7 +155,9 @@ Ticker messages are messages which would normaly be displayed in the upper right
     }
 }
 ```
-Possible values of ticker event are:
+
+The following list is copied [from the Bakkesmod site](https://wiki.bakkesplugins.com/functions/stat_events/). 
+It's a complete list of Events. Some are StatEvents so they are not published by RL2MQTT.
 
 * Demolish
 * Demolition
