@@ -1,3 +1,9 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./assets/rl2mqtt_dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="./assets/rl2mqtt_dark.png">
+  <img alt="RL2MQTT Banner" src="assets/rl2mqtt_light.png">
+</picture>
+
 # RL2MQTT
 
 Connect your Rocket League to an MQTT broker. Game events and ticker messages wil be published as json messages. Use these messages in whatever tool you like to do whatever you want. Change lights using node-red and/or home-assistant. Trigger actions in OBS-Studio or activate a soundboard on your discord server.
