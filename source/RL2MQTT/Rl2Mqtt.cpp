@@ -192,12 +192,16 @@ void Rl2Mqtt::onUnload()
 
 void Rl2Mqtt::onMatchEvent(std::string eventname)
 {
+	if (!gameWrapper->IsInGame())
+		return;
 	auto state = gameWrapper->GetCurrentGameState();
 	publishJson(serializeGameInfo(state, eventname, getHomeTeam(state)), MQTT_TOPIC_GAME_EVENT);
 }
 
 void Rl2Mqtt::onStatTickerMessage(void* params) 
 {
+	if (!gameWrapper->IsInGame())
+		return;
 	auto state = gameWrapper->GetCurrentGameState();
 	publishJson(serializeEvent(state, (StatTickerParams*)params, getHomeTeam(state)), MQTT_TOPIC_STATTICKER);
 }
