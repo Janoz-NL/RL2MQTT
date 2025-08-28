@@ -112,8 +112,8 @@
     <ClInclude Include="version.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\plugins\settings\RL2MQTT.set" />
     <None Include="..\..\README.md" />
-    <None Include="..\plugins\settings\RL2MQTT.set" />
     <None Include="..\vcpkg.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

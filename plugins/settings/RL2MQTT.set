@@ -1,13 +1,19 @@
 RL2MQTT
-9|RL2MQTT is a plugin that publishes game events to MQTT topics. Main game events will 
-9|be published on "rl2mqtt/gameevent" while ticker events will be published 
-9|on "rl2mqtt/ticker".
+9|RL2MQTT is a plugin that publishes game events to MQTT topics. Main game events will be published 
+9|on "rl2mqtt/gameevent". Ticker events will be published on "rl2mqtt/ticker". Stat events will be 
+9|published on "rl2mqtt/stat" and game time will be published in "rl2mqtt/gametime".
 9|
 8|
 9|MQTT Server settings
 12|Server|rl2mqtt_server
 12|Username|rl2mqtt_password
 12|password|rl2mqtt_password
+1|Connect on startup|rl2mqtt_connect_on_startup
+8|
+9|Stat messages are only about the local player. If you want Stat messages from all players, they could 
+9|all connect to the same server. To make deduplicating the other messages easier you are able to only 
+9|send the stat messages.
+6|Messages to publish|rl2mqtt_message_types|All messages@0&Only Stat@1
 8|
 0|Connect|rl2mqtt_connect_async
 7|

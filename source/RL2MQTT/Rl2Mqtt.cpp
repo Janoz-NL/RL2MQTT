@@ -36,6 +36,8 @@ void Rl2Mqtt::onLoad()
 	cvarManager->registerCvar(CVAR_MQTT_VERSION, plugin_version, "Plugin version", false, false, 0, false, 0, false);
 	cvarManager->registerCvar(CVAR_MQTT_STATUS, ".....", "Server Status", false, false, 0, false, 0, false);
 
+	cvarManager->registerCvar(CVAR_MQTT_MESSAGE_TYPES, "0", "Which messages to send", true, true, 0, true, 2);
+
 	// (Dis)Connect commands
 	cvarManager->registerNotifier(COMMAND_MQTT_CONNECT, [this](std::vector<std::string> args) {
 		connect();
@@ -124,7 +126,7 @@ void Rl2Mqtt::onUnload()
 
 void Rl2Mqtt::onGameTimeChanged()
 {
-	if (!shouldProcess())
+	if (!shouldProcess(false))
 		return;
 	auto state = gameWrapper->GetCurrentGameState();
 	publishJson(serializeGameTime(state), MQTT_TOPIC_GAME_TIME);
@@ -132,7 +134,7 @@ void Rl2Mqtt::onGameTimeChanged()
 
 void Rl2Mqtt::onMatchEvent(std::string eventname)
 {
-	if (!shouldProcess())
+	if (!shouldProcess(false))
 		return;
 	auto state = gameWrapper->GetCurrentGameState();
 	publishJson(serializeGameInfo(state, eventname, getHomeTeam(state)), MQTT_TOPIC_GAME_EVENT);
@@ -140,7 +142,7 @@ void Rl2Mqtt::onMatchEvent(std::string eventname)
 
 void Rl2Mqtt::onStatTickerMessage(void* params) 
 {
-	if (!shouldProcess())
+	if (!shouldProcess(false))
 		return;
 	StatTickerParams* pStruct = (StatTickerParams*)params;
 	auto state = gameWrapper->GetCurrentGameState();
@@ -154,7 +156,7 @@ void Rl2Mqtt::onStatTickerMessage(void* params)
 
 void Rl2Mqtt::onStatEvent(void* params)
 {
-	if (!shouldProcess())
+	if (!shouldProcess(true))
 		return;
 	StatEventParams* pStruct = (StatEventParams*)params;
 	auto state = gameWrapper->GetCurrentGameState();
@@ -180,11 +182,14 @@ unsigned char Rl2Mqtt::getHomeTeam(ServerWrapper state)
 	return 127; //non excisting team
 }
 
-bool Rl2Mqtt::shouldProcess() 
+bool Rl2Mqtt::shouldProcess(bool isStat) 
 {
 	if (!_mqttClient) return false;
 	if (!_mqttClient->is_connected()) return false;
 	if (!gameWrapper->IsInGame()) return false;
+
+	int which = cvarManager->getCvar(CVAR_MQTT_MESSAGE_TYPES).getIntValue();
+	if (which == 1 && !isStat) return false;
 	return true;
 }
 

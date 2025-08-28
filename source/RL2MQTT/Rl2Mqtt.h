@@ -12,7 +12,8 @@ constexpr auto plugin_version = stringify(VERSION_MAJOR) "." stringify(VERSION_M
 #define CVAR_MQTT_PASSWORD				"rl2mqtt_password"
 #define CVAR_MQTT_STATUS				"rl2mqtt_status"
 #define	CVAR_MQTT_VERSION				"rl2mqtt_version"
-#define CVAR_MQTT_CONNECT_ON_STARTUP	"rl2mqtt_connect-on-startup"
+#define CVAR_MQTT_CONNECT_ON_STARTUP	"rl2mqtt_connect_on_startup"
+#define CVAR_MQTT_MESSAGE_TYPES			"rl2mqtt_message_types"
 
 #define COMMAND_MQTT_CONNECT	"rl2mqtt_connect"
 #define COMMAND_MQTT_DISCONNECT	"rl2mqtt_disconnect"
@@ -28,7 +29,7 @@ private:
 	void onStatTickerMessage(void* params);
 	void onStatEvent(void* params);
 	unsigned char getHomeTeam(ServerWrapper state);
-	bool shouldProcess();
+	bool shouldProcess(bool isStat);
 
 	void connect();
 	void disconnect();
