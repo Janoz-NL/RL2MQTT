@@ -26,9 +26,8 @@ Configuration can also be done in the console (F6). Change server settings using
 an IP address is enough. Optionaly you can also configure a username and password with 
 `rl2mqtt_username "user"` and `rl2mqtt_password "password"` when nescesary.
 
-To connect use `rl2mqtt_connect` and to disconnect `rl2mqtt_disconnect`.
-
-You can automatically connect on startup by setting `rl2mqtt_connect_on_startup 1`.
+To connect use `rl2mqtt_connect` and to disconnect `rl2mqtt_disconnect`. You can automatically 
+connect on startup by setting `rl2mqtt_connect_on_startup 1`.
 
 If you only want to send Stat messages, use `rl2mqtt_message_types 1`, otherwise keep it
 on `rl2mqtt_message_types 0`.
