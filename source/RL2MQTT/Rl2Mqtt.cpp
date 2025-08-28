@@ -9,6 +9,7 @@ BAKKESMOD_PLUGIN(Rl2Mqtt, "RocketLeague 2 MQTT", plugin_version, PLUGINTYPE_FREE
 
 #define MQTT_CLIENTID			"RocketLeague"
 #define MQTT_TOPIC_STATTICKER	"rl2mqtt/ticker"
+#define MQTT_TOPIC_STAT_EVENT	"rl2mqtt/stat"
 #define MQTT_TOPIC_GAME_EVENT	"rl2mqtt/gameevent"
 #define MQTT_TOPIC_GAME_TIME	"rl2mqtt/gametime"
 
@@ -62,6 +63,10 @@ void Rl2Mqtt::onLoad()
 		{
 			onStatTickerMessage(params);
 		});
+	gameWrapper->HookEventWithCallerPost<ServerWrapper>("Function TAGame.GFxHUD_TA.HandleStatEvent",
+		[this](ServerWrapper caller, void* params, std::string eventname) {
+			onStatEvent(params);
+		});
 
 	// Player events
 	gameWrapper->HookEventWithCallerPost<ServerWrapper>("Function TAGame.GameEvent_TA.EventPlayerAdded",
@@ -103,7 +108,7 @@ void Rl2Mqtt::onLoad()
 		});
 
 	//Time event
-	gameWrapper->HookEventWithCallerPost<ServerWrapper>("Function TAGame.GameEvent_Soccar_TA.OnGameTimeUpdated",
+	gameWrapper->HookEventWithCaller<ServerWrapper>("Function TAGame.GameEvent_Soccar_TA.OnGameTimeUpdated",
 		[this](ServerWrapper caller, void* params, std::string eventname)
 		{
 			onGameTimeChanged();
@@ -121,11 +126,8 @@ void Rl2Mqtt::onGameTimeChanged()
 {
 	if (!shouldProcess())
 		return;
-	publishJson(
-		{
-			{ "remaing" , std::lround(gameWrapper->GetCurrentGameState().GetGameTimeRemaining()) },
-
-		}, MQTT_TOPIC_GAME_TIME);
+	auto state = gameWrapper->GetCurrentGameState();
+	publishJson(serializeGameTime(state), MQTT_TOPIC_GAME_TIME);
 }
 
 void Rl2Mqtt::onMatchEvent(std::string eventname)
@@ -140,8 +142,28 @@ void Rl2Mqtt::onStatTickerMessage(void* params)
 {
 	if (!shouldProcess())
 		return;
+	StatTickerParams* pStruct = (StatTickerParams*)params;
 	auto state = gameWrapper->GetCurrentGameState();
-	publishJson(serializeEvent(state, (StatTickerParams*)params, getHomeTeam(state)), MQTT_TOPIC_STATTICKER);
+	publishJson(serializeEvent(
+		state, 
+		StatEventWrapper(pStruct->StatEvent),
+		PriWrapper(pStruct->Receiver),
+		PriWrapper(pStruct->Victim),
+		getHomeTeam(state)), MQTT_TOPIC_STATTICKER);
+}
+
+void Rl2Mqtt::onStatEvent(void* params)
+{
+	if (!shouldProcess())
+		return;
+	StatEventParams* pStruct = (StatEventParams*)params;
+	auto state = gameWrapper->GetCurrentGameState();
+	publishJson(serializeEvent(
+		state,
+		StatEventWrapper(pStruct->StatEvent),
+		PriWrapper(pStruct->PRI),
+		NULL,
+		getHomeTeam(state)), MQTT_TOPIC_STAT_EVENT);
 }
 
 

@@ -45,5 +45,6 @@
   <ItemGroup>
     <None Include="..\plugins\settings\RL2MQTT.set" />
     <None Include="..\vcpkg.json" />
+    <None Include="..\..\README.md" />
   </ItemGroup>
 </Project>

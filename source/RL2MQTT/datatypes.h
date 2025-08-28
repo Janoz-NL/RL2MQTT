@@ -9,3 +9,11 @@ struct StatTickerParams {
 	// wrapper for the stat event
 	uintptr_t StatEvent;
 };
+
+// structure of a stat event
+struct StatEventParams {
+	// always primary player
+	uintptr_t PRI;
+	// wrapper for the stat event
+	uintptr_t StatEvent;
+};

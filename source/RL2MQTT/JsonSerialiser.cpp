@@ -61,7 +61,8 @@ json serializePlayer(ServerWrapper sw, PriWrapper player, bool teamExpanded, uns
 	json result = 
 	{
 		{"name", getString(player.GetPlayerName())},
-		{"id", player.GetUniqueIdWrapper().GetIdString()}
+		{"id", player.GetUniqueIdWrapper().GetIdString()},
+		{"score", player.GetMatchScore()}
 	};
 	ClubDetailsWrapper club = player.GetClubDetails();
 	if (club) 
@@ -122,17 +123,23 @@ json serializeStatEvent(StatEventWrapper statEvent)
 	};
 }
 
-json serializeEvent(ServerWrapper sw, StatTickerParams* pStruct, unsigned char homeTeam)
+json serializeEvent(ServerWrapper sw, StatEventWrapper statEvent, PriWrapper player, PriWrapper victim, unsigned char homeTeam)
 {
 	json result;
-	result["tickerEvent"] = serializeStatEvent(StatEventWrapper(pStruct->StatEvent));
-	result["player"] = serializePlayer(sw,PriWrapper(pStruct->Receiver), true, homeTeam);
-	PriWrapper victim = PriWrapper(pStruct->Victim);
+	result["tickerEvent"] = serializeStatEvent(statEvent);
+	result["player"] = serializePlayer(sw, player, true, homeTeam);
 	if (victim) 
 	{
 		result["victim"] = serializePlayer(sw, victim, true, homeTeam);
 	}
 	return result;
+}
+
+json serializeGameTime(ServerWrapper sw) {
+	return {
+			{ "remaining", sw.GetSecondsRemaining() },
+			{ "overtime", sw.GetbOverTime() == 1 }
+	};
 }
 
 json serializeGameInfo(ServerWrapper sw, std::string event, unsigned char homeTeam) {

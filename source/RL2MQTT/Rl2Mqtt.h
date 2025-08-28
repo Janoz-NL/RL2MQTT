@@ -26,7 +26,7 @@ private:
 	void onGameTimeChanged();
 	void onMatchEvent(std::string eventname);
 	void onStatTickerMessage(void* params);
-
+	void onStatEvent(void* params);
 	unsigned char getHomeTeam(ServerWrapper state);
 	bool shouldProcess();
 

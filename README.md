@@ -55,13 +55,17 @@ published in `"rl2mqtt/gameevent"`.
                 "tag":"TAG"
             },
             "id":"Epic|12345|0",
-            "name":"Janoz"
+            "name":"Janoz",
+            "score": 123
+
         },{
             "id":"Unknown|0|0",
-            "name":"Buzz"
+            "name":"Buzz",
+            "score": 123
         },{
             "id":"Unknown|0|0",
-            "name":"Iceman"
+            "name":"Iceman",
+            "score": 123
         }],
         "primaryColor":{"B":255,"G":115,"R":24},
         "score":0,
@@ -74,13 +78,16 @@ published in `"rl2mqtt/gameevent"`.
         "num":1,
         "players":[{
             "id":"Unknown|0|0",
-            "name":"Centice"
+            "name":"Centice",
+            "score": 123
         },{
             "id":"Unknown|0|0",
-            "name":"Gerwin"
+            "name":"Gerwin",
+            "score": 123
         },{
             "id":"Unknown|0|0",
-            "name":"Imp"
+            "name":"Imp",
+            "score": 123
         }],
         "primaryColor":{"B":24,"G":100,"R":194},
         "score":0,
@@ -99,17 +106,11 @@ Curently the following hooks are supported:
 * TAGame.GameEvent_Soccar_TA.Destroyed
 * TAGame.GameEvent_Soccar_TA.EventMatchEnded
 
-## Ticker messages
+## Stat messages
 
-Rocket League also publishes stat events. Those events are divided into two categories:
+Rocket League also publishes stat events messages. Those events are divided into two categories:
 
-#### StatEvent
- 
-Stat events are messages which normaly popup fullscreen for the current player. These 
-are things like "Clear Ball" or "First Touch". Currently these messages are _not implemented_
-by RL2MQTT.
-
-#### StatTickerMessages
+### StatTickerMessages
 
 Ticker messages are messages which would normally be displayed in the upper right 
 corner. The JSON message consists of the player and the tickerEvent. In case of a 
@@ -129,6 +130,7 @@ corner. The JSON message consists of the player and the tickerEvent. In case of 
         },
         "id":"Epic|12345|0",
         "name":"Janoz",
+        "score": 234,
         "team":{
             "clubId":0,
             "homeTeam":true,
@@ -146,6 +148,7 @@ corner. The JSON message consists of the player and the tickerEvent. In case of 
     "victim":{
         "id":"Unknown|0|0",
         "name":"Imp",
+        "score": 345,
         "team":{
             "clubId":0,
             "homeTeam":false,
@@ -160,8 +163,21 @@ corner. The JSON message consists of the player and the tickerEvent. In case of 
 }
 ```
 
+### StatEvent
+ 
+Stat events are messages which normaly popup fullscreen for the current player. These 
+are things like "Clear Ball" or "First Touch". Only the stats of the primary local player 
+are published. The json message has the same format as StatTickerMessages, but the player 
+is always the primary local player. In case of a demolishion there is also no victim. There 
+is also a lot of overlap between these messahes and the StatTickerMessages. If the local 
+player does a shot on goal, two messages are published. A ticker and a stat message. Stat 
+events are published in `rl2mqtt/stat`
+
+
+### Eventnames
+
 The following list is copied [from the Bakkesmod site](https://wiki.bakkesplugins.com/functions/stat_events/). 
-It's a complete list of Events. Some are StatEvents so they are not published by RL2MQTT.
+It's a complete list of Events. Some are StatEvents, some are TickerMessages, some are both.
 
 * Demolish
 * Demolition
@@ -209,6 +225,19 @@ It's a complete list of Events. Some are StatEvents so they are not published by
 * KO_HeavyBlock
 * KO_PlayerGrabbed
 * KO_PlayerThrown
+
+## Game Time
+
+The total seconds remaining is published in `rl2mqtt/gametime`.
+
+### Example of gametime message
+```json
+ {
+    "remaining" : 300
+    "overtime" : false
+}
+```
+Time remaining is in seconds. When a game goes into overtime, remaining starts counting up again.
 
 # Usages
 
