@@ -7,41 +7,12 @@
 
 BAKKESMOD_PLUGIN(Rl2Mqtt, "RocketLeague 2 MQTT", plugin_version, PLUGINTYPE_FREEPLAY)
 
-
 #define MQTT_CLIENTID			"RocketLeague"
 #define MQTT_TOPIC_STATTICKER	"rl2mqtt/ticker"
 #define MQTT_TOPIC_GAME_EVENT	"rl2mqtt/gameevent"
-
+#define MQTT_TOPIC_GAME_TIME	"rl2mqtt/gametime"
 
 std::shared_ptr<mqtt::async_client> _mqttClient;
-
-void Rl2Mqtt::logJson(json json) {
-	std::string message = json.dump(1, ' ', true, json::error_handler_t::ignore);
-	cvarManager->log(message);
-}
-
-void Rl2Mqtt::publishJson(json json, std::string topic) {
-	try
-	{
-		if (_mqttClient->is_connected())
-		{
-			_mqttClient->publish(mqtt::make_message(topic, json.dump(), 1, false));
-		}
-	}
-	catch (const mqtt::exception& exc) {
-		cvarManager->log(exc.what());
-	}
-	catch (const std::exception& ex)
-	{
-		cvarManager->log(ex.what());
-	}
-}
-
-void Rl2Mqtt::setServerStatus(std::string message)
-{
-	cvarManager->log(message);
-	cvarManager->getCvar(CVAR_MQTT_STATUS).setValue(message);
-}
 
 void Rl2Mqtt::onLoad()
 {
@@ -130,9 +101,73 @@ void Rl2Mqtt::onLoad()
 		{
 			onMatchEvent(eventname);
 		});
+
+	//Time event
+	gameWrapper->HookEventWithCallerPost<ServerWrapper>("Function TAGame.GameEvent_Soccar_TA.OnGameTimeUpdated",
+		[this](ServerWrapper caller, void* params, std::string eventname)
+		{
+			onGameTimeChanged();
+		});
 }
 
-void Rl2Mqtt::connect() 
+void Rl2Mqtt::onUnload()
+{
+	disconnect();
+	cvarManager->log("Unloaded Rl2Mqtt");
+}
+
+
+void Rl2Mqtt::onGameTimeChanged()
+{
+	if (!shouldProcess())
+		return;
+	publishJson(
+		{
+			{ "remaing" , std::lround(gameWrapper->GetCurrentGameState().GetGameTimeRemaining()) },
+
+		}, MQTT_TOPIC_GAME_TIME);
+}
+
+void Rl2Mqtt::onMatchEvent(std::string eventname)
+{
+	if (!shouldProcess())
+		return;
+	auto state = gameWrapper->GetCurrentGameState();
+	publishJson(serializeGameInfo(state, eventname, getHomeTeam(state)), MQTT_TOPIC_GAME_EVENT);
+}
+
+void Rl2Mqtt::onStatTickerMessage(void* params) 
+{
+	if (!shouldProcess())
+		return;
+	auto state = gameWrapper->GetCurrentGameState();
+	publishJson(serializeEvent(state, (StatTickerParams*)params, getHomeTeam(state)), MQTT_TOPIC_STATTICKER);
+}
+
+
+
+unsigned char Rl2Mqtt::getHomeTeam(ServerWrapper state)
+{
+	if (state)
+	{
+		auto localPlayer = state.GetLocalPrimaryPlayer();
+		if (localPlayer) {
+			return localPlayer.GetTeamNum2();
+		}
+	}
+	return 127; //non excisting team
+}
+
+bool Rl2Mqtt::shouldProcess() 
+{
+	if (!_mqttClient) return false;
+	if (!_mqttClient->is_connected()) return false;
+	if (!gameWrapper->IsInGame()) return false;
+	return true;
+}
+
+
+void Rl2Mqtt::connect()
 {
 	setServerStatus("Connecting...");
 
@@ -148,7 +183,7 @@ void Rl2Mqtt::connect()
 		.user_name(user)
 		.password(password)
 		.finalize();
-	
+
 	_mqttClient = std::make_shared<mqtt::async_client>(server, MQTT_CLIENTID);
 
 	try
@@ -173,50 +208,42 @@ void Rl2Mqtt::connect()
 void Rl2Mqtt::disconnect()
 {
 	setServerStatus("Disconnecting...");
-	if (_mqttClient) 
+	if (_mqttClient)
 		if (_mqttClient->is_connected())
 		{
 			_mqttClient->disconnect();
-			setServerStatus("Dissconnected");
+			setServerStatus("Disconnected");
 			return;
 		}
 	cvarManager->log("Wasn't connected");
-	setServerStatus("Dissconnected");
+	setServerStatus("Disconnected");
 }
 
-void Rl2Mqtt::onUnload()
-{
-	disconnect();
-	cvarManager->log("Unloaded Rl2Mqtt");
-}
-
-void Rl2Mqtt::onMatchEvent(std::string eventname)
-{
-	if (!gameWrapper->IsInGame())
-		return;
-	auto state = gameWrapper->GetCurrentGameState();
-	publishJson(serializeGameInfo(state, eventname, getHomeTeam(state)), MQTT_TOPIC_GAME_EVENT);
-}
-
-void Rl2Mqtt::onStatTickerMessage(void* params) 
-{
-	if (!gameWrapper->IsInGame())
-		return;
-	auto state = gameWrapper->GetCurrentGameState();
-	publishJson(serializeEvent(state, (StatTickerParams*)params, getHomeTeam(state)), MQTT_TOPIC_STATTICKER);
-}
-
-unsigned char Rl2Mqtt::getHomeTeam(ServerWrapper state)
-{
-	if (state)
+void Rl2Mqtt::publishJson(json json, std::string topic) {
+	try
 	{
-		auto localPlayer = state.GetLocalPrimaryPlayer();
-		if (localPlayer) {
-			return localPlayer.GetTeamNum2();
+		if (_mqttClient->is_connected())
+		{
+			_mqttClient->publish(mqtt::make_message(topic, json.dump(), 1, false));
 		}
 	}
-	return 127; //non excisting team
+	catch (const mqtt::exception& exc) {
+		cvarManager->log(exc.what());
+	}
+	catch (const std::exception& ex)
+	{
+		cvarManager->log(ex.what());
+	}
 }
 
 
+void Rl2Mqtt::logJson(json json) {
+	std::string message = json.dump(1, ' ', true, json::error_handler_t::ignore);
+	cvarManager->log(message);
+}
 
+void Rl2Mqtt::setServerStatus(std::string message)
+{
+	cvarManager->log(message);
+	cvarManager->getCvar(CVAR_MQTT_STATUS).setValue(message);
+}

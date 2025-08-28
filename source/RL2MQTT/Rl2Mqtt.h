@@ -23,13 +23,18 @@ class Rl2Mqtt: public BakkesMod::Plugin::BakkesModPlugin
 	void onUnload() override;
 
 private:
-	void setServerStatus(std::string message);
-	void connect();
-	void disconnect();
-	void logJson(json json);
-	void publishJson(json json, std::string topic);
-	unsigned char getHomeTeam(ServerWrapper state);
+	void onGameTimeChanged();
 	void onMatchEvent(std::string eventname);
 	void onStatTickerMessage(void* params);
+
+	unsigned char getHomeTeam(ServerWrapper state);
+	bool shouldProcess();
+
+	void connect();
+	void disconnect();
+	void publishJson(json json, std::string topic);
+
+	void logJson(json json);
+	void setServerStatus(std::string message);
 };
 

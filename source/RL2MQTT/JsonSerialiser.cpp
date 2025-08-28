@@ -81,10 +81,6 @@ json serializePlayer(ServerWrapper sw, PriWrapper player, bool teamExpanded, uns
 
 json serializeTeams(ServerWrapper sw, unsigned char homeTeam)
 {
-	if (sw.GetTeams().IsNull())
-	{
-		return json::array();
-	}
 	ArrayWrapper<PriWrapper> players = sw.GetPRIs();
 	std::map<int, json> teams;
 	json noTeam;
