@@ -28,7 +28,11 @@ an IP address is enough. Optionaly you can also configure a username and passwor
 
 To connect use `rl2mqtt_connect` and to disconnect `rl2mqtt_disconnect`.
 
-You can automatically connect on startup by setting `rl2mqtt_connect-on-startup 1`.
+You can automatically connect on startup by setting `rl2mqtt_connect_on_startup 1`.
+
+If you only want to send Stat messages, use `rl2mqtt_message_types 1`, otherwise keep it
+on `rl2mqtt_message_types 0`.
+
 
 ## Game event messages
 
