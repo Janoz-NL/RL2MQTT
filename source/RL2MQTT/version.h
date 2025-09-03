@@ -1,7 +1,7 @@
 #pragma once
 #define VERSION_MAJOR 1
 #define VERSION_MINOR 0
-#define VERSION_BUILD 168
+#define VERSION_BUILD 178
 
 #define stringify(a) stringify_(a)
 #define stringify_(a) #a

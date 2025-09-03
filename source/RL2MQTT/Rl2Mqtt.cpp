@@ -12,6 +12,7 @@ BAKKESMOD_PLUGIN(Rl2Mqtt, "RocketLeague 2 MQTT", plugin_version, PLUGINTYPE_FREE
 #define MQTT_TOPIC_STAT_EVENT	"rl2mqtt/stat"
 #define MQTT_TOPIC_GAME_EVENT	"rl2mqtt/gameevent"
 #define MQTT_TOPIC_GAME_TIME	"rl2mqtt/gametime"
+#define MQTT_TOPIC_LOG			"rl2mqtt/log"
 
 std::shared_ptr<mqtt::async_client> _mqttClient;
 
@@ -186,7 +187,7 @@ bool Rl2Mqtt::shouldProcess(bool isStat)
 {
 	if (!_mqttClient) return false;
 	if (!_mqttClient->is_connected()) return false;
-	if (!gameWrapper->IsInGame()) return false;
+	if (!gameWrapper->IsInGame() && !gameWrapper->IsInOnlineGame()) return false;
 
 	int which = cvarManager->getCvar(CVAR_MQTT_MESSAGE_TYPES).getIntValue();
 	if (which == 1 && !isStat) return false;
@@ -196,6 +197,8 @@ bool Rl2Mqtt::shouldProcess(bool isStat)
 
 void Rl2Mqtt::connect()
 {
+	disconnect();
+
 	setServerStatus("Connecting...");
 
 	auto user = cvarManager->getCvar(CVAR_MQTT_USERNAME).getStringValue();
@@ -220,6 +223,7 @@ void Rl2Mqtt::connect()
 		if (_mqttClient->is_connected())
 		{
 			setServerStatus("Connected");
+			publishJson(serializeLog(gameWrapper->GetUniqueID().GetIdString(), gameWrapper->GetPlayerName(), "connected"), MQTT_TOPIC_LOG);
 		}
 		else
 		{
@@ -238,7 +242,7 @@ void Rl2Mqtt::disconnect()
 	if (_mqttClient)
 		if (_mqttClient->is_connected())
 		{
-			_mqttClient->disconnect();
+			_mqttClient->disconnect()->wait();
 			setServerStatus("Disconnected");
 			return;
 		}

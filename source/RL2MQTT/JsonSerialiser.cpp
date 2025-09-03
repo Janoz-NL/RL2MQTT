@@ -114,19 +114,10 @@ json serializeTeams(ServerWrapper sw, unsigned char homeTeam)
 	return result;
 }
 
-json serializeStatEvent(StatEventWrapper statEvent)
-{
-	return
-	{
-		{ "event" , statEvent.GetEventName()
-		}
-	};
-}
-
 json serializeEvent(ServerWrapper sw, StatEventWrapper statEvent, PriWrapper player, PriWrapper victim, unsigned char homeTeam)
 {
 	json result;
-	result["tickerEvent"] = serializeStatEvent(statEvent);
+	result["event"] = statEvent.GetEventName();
 	result["player"] = serializePlayer(sw, player, true, homeTeam);
 	if (victim) 
 	{
@@ -150,4 +141,12 @@ json serializeGameInfo(ServerWrapper sw, std::string event, unsigned char homeTe
 		result["teams"] = serializeTeams(sw, homeTeam);
 	}
 	return result;
+}
+
+json serializeLog(std::string idString, UnrealStringWrapper username, std::string log) {
+	return {
+		{"log", log},
+		{"user", getString(username)},
+		{"userId", idString}
+	};
 }

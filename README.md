@@ -146,9 +146,7 @@ corner. The JSON message consists of the player and the tickerEvent. In case of 
             "secondaryColor":{"B":229,"G":229,"R":229}
         }
     },
-    "tickerEvent":{
-        "event":"Demolish"
-    },
+    "event":"Demolish",
     "victim":{
         "id":"Unknown|0|0",
         "name":"Imp",
