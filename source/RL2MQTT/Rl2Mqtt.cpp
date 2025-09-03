@@ -197,8 +197,6 @@ bool Rl2Mqtt::shouldProcess(bool isStat)
 
 void Rl2Mqtt::connect()
 {
-	disconnect();
-
 	setServerStatus("Connecting...");
 
 	auto user = cvarManager->getCvar(CVAR_MQTT_USERNAME).getStringValue();
