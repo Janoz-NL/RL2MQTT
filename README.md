@@ -43,6 +43,7 @@ published in `"rl2mqtt/gameevent"`.
 ```json
 {
     "gameEvent":"Function GameEvent_Soccar_TA.Active.StartRound",
+    "matchGUID":"C76862A211F08C338A293793E8FBC013",
     "teams":[{
         "clubId":0,
         "homeTeam":true,
@@ -123,6 +124,8 @@ corner. The JSON message consists of the player and the tickerEvent. In case of 
 
 ```json
 {
+    "event":"Demolish",
+    "matchGUID":"C76862A211F08C338A293793E8FBC013",
     "player":{
         "club":{
             "accentColor":{"B":0,"G":178,"R":0},
@@ -145,7 +148,6 @@ corner. The JSON message consists of the player and the tickerEvent. In case of 
             "secondaryColor":{"B":229,"G":229,"R":229}
         }
     },
-    "event":"Demolish",
     "victim":{
         "id":"Unknown|0|0",
         "name":"Imp",
@@ -233,7 +235,8 @@ The total seconds remaining is published in `rl2mqtt/gametime`.
 
 ### Example of gametime message
 ```json
- {
+{
+    "matchGUID":"C76862A211F08C338A293793E8FBC013",
     "remaining" : 300
     "overtime" : false
 }

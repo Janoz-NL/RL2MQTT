@@ -123,13 +123,15 @@ json serializeEvent(ServerWrapper sw, StatEventWrapper statEvent, PriWrapper pla
 	{
 		result["victim"] = serializePlayer(sw, victim, true, homeTeam);
 	}
+	result["matchGUID"] = sw.GetMatchGUID();
 	return result;
 }
 
 json serializeGameTime(ServerWrapper sw) {
 	return {
 			{ "remaining", sw.GetSecondsRemaining() },
-			{ "overtime", sw.GetbOverTime() == 1 }
+			{ "overtime", sw.GetbOverTime() == 1 },
+			{ "matchGUID", sw.GetMatchGUID() }
 	};
 }
 
@@ -140,6 +142,7 @@ json serializeGameInfo(ServerWrapper sw, std::string event, unsigned char homeTe
 	{
 		result["teams"] = serializeTeams(sw, homeTeam);
 	}
+	result["matchGUID"] = sw.GetMatchGUID();
 	return result;
 }
 
