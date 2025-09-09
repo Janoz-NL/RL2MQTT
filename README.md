@@ -14,9 +14,9 @@ or activate a soundboard on your discord server.
 There are a few ways to install this plugin. From within Rocket League you can use the 
 plugin manager and use ID _604_ to install this plugin. On the 
 [Bakkesmod page of this plugin](https://bakkesplugins.com/plugins/view/604) you can install 
-the plugin using the button or download the zip file. The latest release zipfile can also be 
-downloaded from Github. Bakkesmod will always be verified by the bakkesmod team, but might 
-be a few versions behind the Github release.
+the plugin using the button or download the zip file and install it using the plugin manager.
+The latest release zipfile can also be downloaded from Github. The Bakkesmod download will 
+always be verified by the bakkesmod team, but might be a few versions behind the Github release.
 
 ## Configuration
 
