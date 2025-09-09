@@ -9,6 +9,15 @@ published as json messages. Use these messages in whatever tool you like to do w
 you want. Change lights using node-red and/or home-assistant. Trigger actions in OBS-Studio 
 or activate a soundboard on your discord server.
 
+## Installation
+
+There are a few ways to install this plugin. From within Rocket League you can use the 
+plugin manager and use ID _604_ to install this plugin. On the 
+[Bakkesmod page of this plugin](https://bakkesplugins.com/plugins/view/604) you can install 
+the plugin using the button or download the zip file. The latest release zipfile can also be 
+downloaded from Github. Bakkesmod will always be verified by the bakkesmod team, but might 
+be a few versions behind the Github release.
+
 ## Configuration
 
 There are two ways to configure this plugin. Using the plugin GUI and using the console.
