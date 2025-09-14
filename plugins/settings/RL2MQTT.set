@@ -6,8 +6,8 @@ RL2MQTT
 8|
 9|MQTT Server settings
 12|Server|rl2mqtt_server
-12|Username|rl2mqtt_password
-12|password|rl2mqtt_password
+12|Username|rl2mqtt_username
+12|Password|rl2mqtt_password
 1|Connect on startup|rl2mqtt_connect_on_startup
 8|
 9|Stat messages are only about the local player. If you want Stat messages from all players, they could 
@@ -22,4 +22,5 @@ RL2MQTT
 9|Current state is $rl2mqtt_status$
 8|
 9|Version $rl2mqtt_version$
+
 9|This plugin was made by Janoz
