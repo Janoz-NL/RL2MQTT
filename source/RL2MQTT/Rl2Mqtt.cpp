@@ -203,6 +203,11 @@ void Rl2Mqtt::connect()
 	auto password = cvarManager->getCvar(CVAR_MQTT_PASSWORD).getStringValue();
 	auto server = cvarManager->getCvar(CVAR_MQTT_SERVER).getStringValue();
 
+	auto sslopts = mqtt::ssl_options_builder()
+		.verify(false)
+		.finalize();
+
+
 	auto connOptions = mqtt::connect_options_builder()
 		.clean_session()
 		.automatic_reconnect(true)
@@ -210,12 +215,14 @@ void Rl2Mqtt::connect()
 		.keep_alive_interval(std::chrono::seconds(5))
 		.user_name(user)
 		.password(password)
+		.ssl(sslopts)
 		.finalize();
 
-	_mqttClient = std::make_shared<mqtt::async_client>(server, MQTT_CLIENTID);
 
 	try
 	{
+		_mqttClient = std::make_shared<mqtt::async_client>(server, MQTT_CLIENTID);
+
 		_mqttClient->connect(connOptions)->wait();
 
 		if (_mqttClient->is_connected())

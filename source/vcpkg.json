@@ -1,7 +1,13 @@
 {
   "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
   "dependencies": [
-    "nlohmann-json",
-    "paho-mqttpp3" 
+    {
+      "name": "paho-mqttpp3",
+      "features": [ "ssl" ]
+    },
+
+    {
+      "name": "nlohmann-json"
+    }
   ]
 }
