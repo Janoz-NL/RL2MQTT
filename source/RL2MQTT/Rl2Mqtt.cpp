@@ -205,6 +205,7 @@ void Rl2Mqtt::connect()
 
 	auto sslopts = mqtt::ssl_options_builder()
 		.verify(false)
+		.enable_server_cert_auth(false)
 		.finalize();
 
 
