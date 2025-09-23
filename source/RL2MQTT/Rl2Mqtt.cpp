@@ -7,7 +7,7 @@
 
 BAKKESMOD_PLUGIN(Rl2Mqtt, "RocketLeague 2 MQTT", plugin_version, PLUGINTYPE_FREEPLAY)
 
-#define MQTT_CLIENTID			"RocketLeague"
+#define MQTT_CLIENTID			"RocketLeague_"
 #define MQTT_TOPIC_STATTICKER	"rl2mqtt/ticker"
 #define MQTT_TOPIC_STAT_EVENT	"rl2mqtt/stat"
 #define MQTT_TOPIC_GAME_EVENT	"rl2mqtt/gameevent"
@@ -222,7 +222,7 @@ void Rl2Mqtt::connect()
 
 	try
 	{
-		_mqttClient = std::make_shared<mqtt::async_client>(server, MQTT_CLIENTID);
+		_mqttClient = std::make_shared<mqtt::async_client>(server, MQTT_CLIENTID + std::to_string(std::rand()));
 
 		_mqttClient->connect(connOptions)->wait();
 
