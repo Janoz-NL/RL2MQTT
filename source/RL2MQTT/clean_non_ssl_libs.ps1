@@ -1,0 +1,2 @@
+Remove-Item -Path "..\vcpkg_installed\x64-windows-static\x64-windows-static\lib\paho-mqtt3a-static.lib" -Recurse -Force
+Remove-Item -Path "..\vcpkg_installed\x64-windows-static\x64-windows-static\lib\paho-mqtt3c-static.lib" -Recurse -Force

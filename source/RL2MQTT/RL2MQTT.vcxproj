@@ -49,6 +49,10 @@
     <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)plugins\</OutDir>
     <IntDir>$(SolutionDir)build\.intermediates\$(Configuration)\</IntDir>
+    <CustomBuildBeforeTargets>
+    </CustomBuildBeforeTargets>
+    <CustomBuildAfterTargets>
+    </CustomBuildAfterTargets>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg">
     <VcpkgEnableManifest>true</VcpkgEnableManifest>
@@ -95,6 +99,18 @@
     <PreBuildEvent>
       <Command>powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File update_version.ps1 "./version.h" &amp;&amp; xcopy /Y /I $(SolutionDir)..\plugins\settings $(SolutionDir)plugins\settings\ </Command>
     </PreBuildEvent>
+    <CustomBuildStep>
+      <Command>
+      </Command>
+      <Message>
+      </Message>
+      <RootFolder>
+      </RootFolder>
+    </CustomBuildStep>
+    <PreLinkEvent>
+      <Command>powershell.exe -ExecutionPolicy Bypass -NoProfile -NonInteractive -File clean_non_ssl_libs.ps1</Command>
+      <Message>Delete the non-SSL MQTT libs</Message>
+    </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="JsonSerialiser.cpp" />
