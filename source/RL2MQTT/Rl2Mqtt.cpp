@@ -252,6 +252,7 @@ void Rl2Mqtt::disconnect()
 			setServerStatus("Disconnected");
 			return;
 		}
+	_mqttClient->reinitialise(MQTT_CLIENTID + std::to_string(std::rand()));
 	cvarManager->log("Wasn't connected");
 	setServerStatus("Disconnected");
 }
