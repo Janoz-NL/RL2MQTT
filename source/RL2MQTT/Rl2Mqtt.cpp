@@ -222,6 +222,9 @@ void Rl2Mqtt::connect()
 
 	try
 	{
+	    // initialize rand with seed based on current time
+        std::srand(std::time(0));
+
 		_mqttClient = std::make_shared<mqtt::async_client>(server, MQTT_CLIENTID + std::to_string(std::rand()));
 
 		_mqttClient->connect(connOptions)->wait();
