@@ -18,6 +18,9 @@ std::shared_ptr<mqtt::async_client> _mqttClient;
 
 void Rl2Mqtt::onLoad()
 {
+    // initialize rand with seed based on current time
+    std::srand(std::time(0));
+
 	// Server settings
 	cvarManager->registerCvar(CVAR_MQTT_SERVER, "mqtt://localhost:1883", "MQTT server");
 	cvarManager->registerCvar(CVAR_MQTT_USERNAME, "", "MQTT Username");
@@ -222,9 +225,6 @@ void Rl2Mqtt::connect()
 
 	try
 	{
-	    // initialize rand with seed based on current time
-        std::srand(std::time(0));
-
 		_mqttClient = std::make_shared<mqtt::async_client>(server, MQTT_CLIENTID + std::to_string(std::rand()));
 
 		_mqttClient->connect(connOptions)->wait();
@@ -255,7 +255,6 @@ void Rl2Mqtt::disconnect()
 			setServerStatus("Disconnected");
 			return;
 		}
-	_mqttClient->reinitialise(MQTT_CLIENTID + std::to_string(std::rand()));
 	cvarManager->log("Wasn't connected");
 	setServerStatus("Disconnected");
 }
