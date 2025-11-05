@@ -30,7 +30,7 @@ json serializeTeam(TeamWrapper team, unsigned char homeTeam) {
 	{
 		return
 		{
-			{"name", getString(team.GetTeamName())},
+			{"name", getString(team.GetCustomTeamName())},
 			{"num", team.GetTeamNum()},
 			{"index", team.GetTeamIndex()},
 			{"score", team.GetScore()},
