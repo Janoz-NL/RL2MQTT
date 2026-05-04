@@ -1,4 +1,4 @@
-#Announcement
+# Announcement
 
 Sincs Bakkesmod is discontinued, this plugin will also not be maintained anymore. For our
 own projects we switched to using the new official Rocket League websocket api and implemented
