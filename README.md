@@ -1,3 +1,14 @@
+#Announcement
+
+Sincs Bakkesmod is discontinued, this plugin will also not be maintained anymore. For our
+own projects we switched to using the new official Rocket League websocket api and implemented
+a new stand-alone tool to publish events to MQTT.
+
+https://github.com/robertalpha/rlapi2mqtt
+
+
+
+
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/rl2mqtt_dark.png">
   <source media="(prefers-color-scheme: light)" srcset="assets/rl2mqtt_light.png">
